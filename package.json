@@ -1,0 +1,11 @@
+{
+  "name": "gen",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kelle Connolly <kelle.connolly@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.12.0",
+    "prettier": "1.10"
+  }
+}
