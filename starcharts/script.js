@@ -180,7 +180,7 @@ function mapBackground() {
 // THE MATH
 const directions = ["n", "s", "e", "w"];
 
-function plotConstellationPoint(previousPoint) {
+function plotConstellationPoint(previousPoint, allContellationPoints) {
   const jitter = randomIntBetween(25, 50);
   const offset = randomIntBetween(20, 100);
   const radius = randomIntBetween(2, 7);
@@ -228,8 +228,10 @@ function plotConstellationPoint(previousPoint) {
   }
 
   if (isCircleWithinMapBounds(circle)) return circle;
-  return plotConstellationPoint(previousPoint);
+  return plotConstellationPoint(previousPoint, allContellationPoints);
 }
+
+const constellationStars = [];
 
 function constellation() {
   const stars = randomIntBetween(4, 9);
@@ -238,7 +240,10 @@ function constellation() {
   for (let i = 0; i <= stars; i++) {
     if (i > 0) {
       const previousCoords = coords[i - 1];
-      const newCircle = plotConstellationPoint(previousCoords);
+      const newCircle = plotConstellationPoint(
+        previousCoords,
+        constellationStars
+      );
 
       coords.push(newCircle);
       context.beginPath();
@@ -249,18 +254,69 @@ function constellation() {
       context.stroke();
       context.closePath();
     }
-
+    constellationStars.push(coords[i]);
     drawCircle(coords[i], "floralwhite");
   }
+}
+
+const closedConstellations = [];
+
+function closedConstellation() {
+  const containingCircle = randomStarWithinMap(randomIntBetween(20, 200));
+  const segments = randomIntBetween(4, 7);
+  const points = [];
+
+  closedConstellations.push(containingCircle);
+
+  // TODO only plot within map
+  for (let i = 0; i <= segments; i++) {
+    const jitter = randomIntBetween(-50, 30);
+    const angle = i * (360 / segments);
+    const radians = angle / 180 * Math.PI;
+    const x =
+      containingCircle.x + containingCircle.radius * Math.cos(radians) + jitter;
+    const y =
+      containingCircle.y - containingCircle.radius * Math.sin(radians) + jitter;
+    const previousPoint = points[i - 1];
+    const point = {
+      x,
+      y,
+      radius: randomIntBetween(4, 7)
+    };
+    points.push(point);
+    drawCircle(point);
+    if (previousPoint) {
+      context.beginPath();
+      context.moveTo(previousPoint.x, previousPoint.y);
+      context.lineTo(point.x, point.y);
+      context.setLineDash([5, 2]);
+      context.strokeStyle = "floralwhite";
+      context.stroke();
+      context.closePath();
+    }
+    if (i === segments) {
+      context.beginPath();
+      context.moveTo(point.x, point.y);
+      context.lineTo(points[0].x, points[0].y);
+      context.setLineDash([5, 2]);
+      context.strokeStyle = "floralwhite";
+      context.stroke();
+      context.closePath();
+    }
+  }
+}
+
+function drawConstellations() {
+  closedConstellation();
+  closedConstellation();
+  closedConstellation();
+  closedConstellation();
+  constellation();
+  constellation();
 }
 
 mapExternalDecoration();
 mapBackground();
 mapLines();
 backgroundStars();
-constellation();
-constellation();
-constellation();
-constellation();
-constellation();
-constellation();
+drawConstellations();
