@@ -14,7 +14,7 @@ function randomIntBetween(min, max) {
 
 const colorSeed = Math.random() * 120;
 const gridDivisor = randomIntBetween(20, 50) + colorSeed / 4;
-const chaosModifier = randomIntBetween(1, 10) / 100;
+const chaosModifier = randomIntBetween(1, 8) / 100;
 const direction = Math.random() >= 0.5 ? "horizontal" : "vertical";
 
 function drawLine(start, end, matrix, odd) {
