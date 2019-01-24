@@ -4,8 +4,16 @@
   "main": "index.js",
   "author": "Kelle Connolly <kelle.connolly@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "new": "canvas-sketch --new --open",
+    "build": "canvas-sketch --build --no-compress --dir build"
+  },
   "devDependencies": {
     "eslint": "^4.12.0",
     "prettier": "1.10"
+  },
+  "dependencies": {
+    "canvas-sketch": "^0.2.0",
+    "canvas-sketch-cli": "^1.2.0"
   }
 }
