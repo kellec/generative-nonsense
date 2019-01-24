@@ -1,34 +1,30 @@
 const canvasSketch = require("canvas-sketch");
+const random = require("canvas-sketch-util/random");
+const palettes = require("nice-color-palettes");
 
-const colours = [
-  "#E56981",
-  "#DAD9A1",
-  "#B7CDA6",
-  "#72778D",
-  "#5B3A67",
-  "#E56981",
-  "#DAD9A1",
-  "#B7CDA6"
-];
+random.setSeed(random.getRandomSeed());
+console.log(random.getSeed());
 
-function randomBetween(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-}
+const palette = random.pick(palettes);
 
-function drawCircle(i, previousCircle, context) {
-  const jitter = randomBetween(30, 100);
-  const maybeInvertedXJitter = Math.random() >= 0.5 ? jitter * -1 : jitter;
-  const maybeInvertedYJitter = Math.random() >= 0.5 ? jitter * -1 : jitter;
-  const r = Math.max(10, previousCircle.r + jitter);
-  const x = previousCircle.x + maybeInvertedXJitter;
-  const y = previousCircle.y + maybeInvertedYJitter;
+function createCircles(width, height) {
+  const circles = [];
+  const count = 18;
 
-  context.beginPath();
-  context.arc(x, y, r, 0, 2 * Math.PI, false);
-  context.strokeStyle = colours[randomBetween(0, colours.length - 1)];
-  context.lineWidth = randomBetween(3, 20);
-  context.filter = `opacity(${randomBetween(25, 80)}%)`;
-  context.stroke();
+  for (let i = 0; i < count; i++) {
+    const previousCircle = circles[i - 1] || {};
+    const x = previousCircle.x || width / 2;
+    const y = previousCircle.y || height / 2;
+
+    circles.push({
+      r: Math.abs(random.noise2D(x, y)) * width / 3,
+      color: random.pick(palette),
+      x: x + random.gaussian() * width / 20,
+      y: y + random.gaussian() * width / 20
+    });
+  }
+
+  return circles;
 }
 
 const settings = {
@@ -40,18 +36,16 @@ const sketch = () => {
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height);
 
-    const limit = 500;
-    const circles = [
-      {
-        x: width / 2 + randomBetween(-30, 30),
-        y: height / 2 + randomBetween(-30, 30),
-        r: 300 + randomBetween(-200, 100)
-      }
-    ];
+    const circles = createCircles(width, height);
 
-    for (let i = 0; i < limit; i++) {
-      drawCircle(i, circles[i - 1] || circles[0], context);
-    }
+    circles.forEach(circle => {
+      context.beginPath();
+      context.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI, false);
+      context.fillStyle = circle.color;
+      context.lineWidth = random.rangeFloor(3, 20);
+      context.filter = `opacity(${random.rangeFloor(25, 70)}%)`;
+      context.fill();
+    });
   };
 };
 

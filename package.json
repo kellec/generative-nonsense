@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "new": "canvas-sketch --new --open",
+    "start": "canvas-sketch",
     "build": "canvas-sketch --build --no-compress --dir build"
   },
   "devDependencies": {
@@ -14,6 +15,8 @@
   },
   "dependencies": {
     "canvas-sketch": "^0.2.0",
-    "canvas-sketch-cli": "^1.2.0"
+    "canvas-sketch-cli": "^1.2.0",
+    "canvas-sketch-util": "^1.6.0",
+    "nice-color-palettes": "^2.0.0"
   }
 }
