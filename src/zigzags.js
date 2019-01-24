@@ -1,24 +1,27 @@
 const canvasSketch = require("canvas-sketch");
+const random = require("canvas-sketch-util/random");
+const palettes = require("nice-color-palettes");
 
 const settings = {
   dimensions: [2048, 2048]
 };
 
-function randomBetween(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-}
-
 const sketch = () => {
-  return ({ context, width, height }) => {
-    context.fillStyle = "white";
-    context.fillRect(0, 0, width, height);
+  const colorCount = random.rangeFloor(3, 6);
+  const palette = random.shuffle(random.pick(palettes));
+  const background = palette[0];
+  const colors = palette.slice(1, colorCount);
 
-    const colorSeed = Math.random() * 120;
-    const gridDivisor = randomBetween(20, 50) + colorSeed / 4;
-    const chaosModifier = randomBetween(1, 8) / 100;
+  return ({ context, width, height }) => {
+    context.fillStyle = background;
+    context.fillRect(0, 0, width, height);
+    context.lineCap = "round";
+
+    const gridDivisor = random.range(10, 30);
+    const chaosModifier = random.range(1, 8) / 100;
     const direction = Math.random() >= 0.5 ? "horizontal" : "vertical";
 
-    function drawLine(start, end, matrix, odd) {
+    function drawLine(start, end, odd) {
       const chaos = Math.random() >= chaosModifier;
       const invert = chaos ? !odd : odd;
 
@@ -29,10 +32,8 @@ const sketch = () => {
       context.beginPath();
       context.moveTo(startX, startY);
       context.lineTo(endX, endY);
-      context.lineWidth = 2;
-      context.strokeStyle = `hsl(${matrix.j -
-        matrix.i +
-        colorSeed}, ${Math.ceil(60 - colorSeed / 4)}%, ${40 + colorSeed / 4}%)`;
+      context.lineWidth = gridDivisor * 0.6;
+      context.strokeStyle = random.pick(colors);
       context.stroke();
     }
 
@@ -45,7 +46,6 @@ const sketch = () => {
         drawLine(
           { x: j * lWidth, y: lHeight * i },
           { x: j * lWidth + lWidth, y: lHeight * i + lHeight },
-          { i, j },
           odd
         );
       }
