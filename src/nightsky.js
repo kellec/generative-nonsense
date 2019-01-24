@@ -1,14 +1,73 @@
 const canvasSketch = require("canvas-sketch");
+const random = require("canvas-sketch-util/random");
 
 const settings = {
-  dimensions: [2048, 1024]
+  dimensions: [2048, 1300]
 };
 
-function randomBetween(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
+function createBackgroundStars(width, height) {
+  const stars = [];
+  const count = random.rangeFloor(200, 400);
+
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: random.range(0, width),
+      y: random.range(0, height),
+      radius: random.rangeFloor(3, 5),
+      opacity: random.range(5, 9) / 10
+    });
+  }
+
+  return stars;
+}
+
+function createStarCluster(width, height) {
+  const stars = [];
+  const count = random.rangeFloor(1000, 1500);
+  const spread = width / 10;
+  const x = random.range(200, width - 200);
+
+  for (let i = 0; i < count; i++) {
+    const distribution = random.gaussian();
+    stars.push({
+      x: random.range(x - spread * distribution, x + spread * distribution),
+      y: random.range(0, height / 3 * 2),
+      radius: random.rangeFloor(3, 5),
+      opacity: random.range(5, 9) / 10
+    });
+  }
+  return stars;
+}
+
+function createHills(width, height) {
+  const hills = [];
+  const count = random.range(2, 4);
+  const totalHorizonHeight = height * 0.6;
+  const segmentHeigt = totalHorizonHeight / count;
+
+  for (let i = 0; i < count; i++) {
+    const points = [];
+    const offset = i * segmentHeigt;
+    const baseY = totalHorizonHeight + offset;
+    const maxOffsetTop = baseY - segmentHeigt / 5;
+    const maxOffsetBottom = baseY + segmentHeigt / 5;
+    const numberOfPeaks = random.range(8, 18);
+    const averagePeakWidth = width / numberOfPeaks;
+
+    for (let x = 0; x <= width + averagePeakWidth; x += averagePeakWidth) {
+      points.push({
+        x,
+        y: random.range(maxOffsetTop, maxOffsetBottom)
+      });
+    }
+
+    hills.push({ points, top: maxOffsetTop, bottom: baseY + segmentHeigt });
+  }
+  return hills;
 }
 
 const sketch = () => {
+  const hue = random.rangeFloor(200, 290); // restrict to blues/purples
   return ({ context, width, height }) => {
     context.fillStyle = "black";
     context.fillRect(0, 0, width, height);
@@ -23,66 +82,22 @@ const sketch = () => {
       context.fill();
     }
 
-    function randomStarWithinMap(radius) {
-      return {
-        x: randomBetween(0, width),
-        y: randomBetween(0, height),
-        radius
-      };
-    }
-
-    function gaussianRand() {
-      var rand = 0;
-
-      for (var i = 0; i < 6; i += 1) {
-        rand += Math.random();
-      }
-
-      return rand / 6;
-    }
-
-    function randomStarJitteredXAxis(radius, x, spread) {
-      const clusteredSpread = gaussianRand();
-      return {
-        x: randomBetween(
-          x - spread * clusteredSpread,
-          x + spread * clusteredSpread
-        ),
-        y: randomBetween(0, height),
-        radius
-      };
-    }
-
     function backgroundStars() {
-      const bgStars = randomBetween(200, 400);
-      for (let i = 0; i < bgStars; i++) {
-        const star = randomStarWithinMap(randomBetween(3, 5));
+      createBackgroundStars(width, height).forEach(star =>
         drawCircleAsDiamond(
           star,
-          `rgba(255, 250, 240, ${randomBetween(5, 9) / 10}`
-        );
-      }
+          `rgba(255, 250, 240, ${random.range(5, 9) / 10})`
+        )
+      );
     }
 
-    // TODO: better
     function milkyway() {
-      const x = randomBetween(200, width - 200);
-      const cluster = randomBetween(500, 1000);
-      for (let i = 0; i < cluster; i++) {
-        const star = randomStarJitteredXAxis(randomBetween(3, 5), x, 500);
+      createStarCluster(width, height).forEach(star =>
         drawCircleAsDiamond(
           star,
-          `rgba(255, 250, 240, ${randomBetween(5, 9) / 10}`
-        );
-      }
-
-      for (let i = 0; i < cluster; i++) {
-        const star = randomStarJitteredXAxis(randomBetween(3, 5), x, 200);
-        drawCircleAsDiamond(
-          star,
-          `rgba(255, 250, 240, ${randomBetween(5, 9) / 10}`
-        );
-      }
+          `rgba(255, 250, 240, ${random.range(5, 9) / 10})`
+        )
+      );
     }
 
     function backgroundGradient() {
@@ -93,9 +108,9 @@ const sketch = () => {
         height
       );
 
-      gradient.addColorStop(0, "#1c202c");
-      gradient.addColorStop(0.5, "#263560");
-      gradient.addColorStop(1, "#495778");
+      gradient.addColorStop(0, `hsl(${hue}, 20%, 10%`);
+      gradient.addColorStop(0.5, `hsl(${hue}, 30%, 20%`);
+      gradient.addColorStop(1, `hsl(${hue}, 40%, 30%`);
 
       context.fillStyle = gradient;
       context.fillRect(0, 0, width, height);
@@ -108,48 +123,45 @@ const sketch = () => {
       const gradient = context.createRadialGradient(
         x, // circle1 x
         y, // circle1 y
-        randomBetween(100, x / 4), // circle1 r
+        random.range(100, x / 4), // circle1 r
         x, // circle2 x
         y, // circle2 y
         r
       );
 
-      gradient.addColorStop(0, "rgba(127, 100, 140, 0.5");
-      gradient.addColorStop(randomBetween(3, 7) / 10, "rgba(127, 100, 140, 0");
+      const hue = random.rangeFloor(0, 260);
+
+      gradient.addColorStop(0, `hsla(${hue}, 80%, 80%, 0.5`);
+      gradient.addColorStop(
+        random.range(3, 7) / 10,
+        `hsla(${hue}, 80%, 80%, 0`
+      );
       context.fillStyle = gradient;
       context.fillRect(0, 0, width, height);
     }
 
     function horizon() {
-      const baseHorizonY = height / 3 * 2;
-      const horizonMaxOffsetTop = baseHorizonY - height / 20;
-      const horizonMaxOffsetBottom = baseHorizonY + height / 20;
-      const numberOfPeaks = randomBetween(8, 18);
-      const averagePeakWidth = width / numberOfPeaks;
-
-      const gradient = context.createLinearGradient(
-        width / 2,
-        horizonMaxOffsetTop,
-        width / 2,
-        height
-      );
-
-      // Add three color stops
-      gradient.addColorStop(0, "#22273d");
-      gradient.addColorStop(1, "#343d5e");
-
-      context.fillStyle = gradient;
-      context.moveTo(0, height);
-
-      for (let x = 0; x <= width + averagePeakWidth; x += averagePeakWidth) {
-        context.lineTo(
-          x,
-          randomBetween(horizonMaxOffsetTop, horizonMaxOffsetBottom)
+      const hills = createHills(width, height);
+      hills.forEach(({ points, top, bottom }) => {
+        const gradient = context.createLinearGradient(
+          width / 2,
+          top,
+          width / 2,
+          bottom
         );
-      }
 
-      context.lineTo(width, height);
-      context.fill();
+        gradient.addColorStop(0, `hsl(${hue}, 10%, 10%)`);
+        gradient.addColorStop(1, `hsl(${hue}, 10%, 20%)`);
+
+        context.fillStyle = gradient;
+        context.beginPath();
+        context.moveTo(0, height);
+        points.forEach(point => {
+          context.lineTo(point.x, point.y);
+        });
+        context.lineTo(width, height);
+        context.fill();
+      });
     }
 
     backgroundGradient();
