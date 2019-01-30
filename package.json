@@ -17,6 +17,7 @@
     "canvas-sketch": "^0.2.0",
     "canvas-sketch-cli": "^1.2.0",
     "canvas-sketch-util": "^1.6.0",
+    "hex-to-hsl": "^1.0.2",
     "nice-color-palettes": "^2.0.0"
   }
 }
