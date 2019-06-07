@@ -17,7 +17,16 @@
     "canvas-sketch": "^0.2.0",
     "canvas-sketch-cli": "^1.2.0",
     "canvas-sketch-util": "^1.6.0",
+    "color": "^3.1.0",
+    "color-contrast": "^0.0.1",
+    "convex-hull": "^1.0.3",
+    "glsl-hsl2rgb": "^1.1.0",
+    "glsl-noise": "^0.0.0",
+    "glslify": "^7.0.0",
     "hex-to-hsl": "^1.0.2",
-    "nice-color-palettes": "^2.0.0"
+    "hex-to-rgb": "^1.0.1",
+    "nice-color-palettes": "^2.0.0",
+    "p5": "^0.7.3",
+    "three": "^0.101.1"
   }
 }
