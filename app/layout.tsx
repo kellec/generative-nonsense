@@ -19,7 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={shareTechMono.className}>
-        <div className="scanlines" />
         {children}
       </body>
     </html>
