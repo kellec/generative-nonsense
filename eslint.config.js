@@ -1,15 +1,9 @@
-const js = require("@eslint/js");
-const globals = require("globals");
+import { FlatCompat } from "@eslint/compat";
 
-module.exports = [
-  js.configs.recommended,
-  {
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
-  },
+const compat = new FlatCompat();
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
+
+export default eslintConfig;
