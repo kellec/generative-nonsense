@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from "react";
 import SketchCanvas from "@/components/SketchCanvas";
 import type { SketchSettings, SketchFn } from "@/lib/types";
+import styles from "./page.module.css";
 
 const sketchModules: Record<string, () => Promise<{ settings: SketchSettings; sketch: SketchFn }>> = {
   zigzags: () => import("@/lib/sketches/zigzags"),
@@ -32,15 +33,15 @@ export default function SketchPage({ params }: { params: Promise<{ slug: string 
   }, [slug]);
 
   if (!sketchModules[slug]) {
-    return <div style={{ color: "white", padding: 40 }}>Sketch not found: {slug}</div>;
+    return <div className={styles.message}>Sketch not found: {slug}</div>;
   }
 
   if (!mod) {
-    return <div style={{ color: "white", padding: 40 }}>Loading...</div>;
+    return <div className={styles.message}>Loading...</div>;
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#000" }}>
+    <div className={styles.wrapper}>
       <SketchCanvas settings={mod.settings} sketch={mod.sketch} />
     </div>
   );
