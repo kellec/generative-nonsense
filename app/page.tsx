@@ -14,7 +14,10 @@ export default function Home() {
         <header className={styles.header}>
           <GlitchTitle text="GENERATIVE NONSENSE" />
           <p className={styles.subtitle}>
-            // canvas experiments by <span className={styles.highlight}>Kelle</span>
+            // <span className={styles.highlight}>generative</span> not generated
+          </p>
+          <p className={styles.subtitle}>
+            // canvas experiments by <span className={styles.highlight}>kelle</span>
           </p>
         </header>
 
