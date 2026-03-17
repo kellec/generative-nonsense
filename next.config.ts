@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
+const isStaticExport = !!process.env.STATIC_EXPORT;
+
 const nextConfig: NextConfig = {
-  output: process.env.STATIC_EXPORT ? "export" : undefined,
+  output: isStaticExport ? "export" : undefined,
+  basePath: isStaticExport ? "/generative-nonsense" : undefined,
 };
 
 export default nextConfig;
