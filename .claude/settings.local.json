@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -d /Users/kelle/src/generative-nonsense/*/index.html)",
+      "Bash(ls -d /Users/kelle/src/generative-nonsense/*/)",
+      "Bash(npm audit:*)",
+      "Bash(npm -v)",
+      "Bash(npm outdated:*)",
+      "Bash(npm install:*)",
+      "Bash(npx canvas-sketch:*)",
+      "Bash(./build.sh 2>&1)",
+      "Bash(npm info:*)",
+      "Bash(npx eslint:*)",
+      "Bash(node:*)",
+      "Bash(npx next:*)"
+    ]
+  }
+}
