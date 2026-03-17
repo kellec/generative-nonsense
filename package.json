@@ -10,23 +10,18 @@
     "build": "canvas-sketch --build --no-compress --dir build"
   },
   "devDependencies": {
-    "eslint": "^4.12.0",
-    "prettier": "1.10"
+    "@eslint/js": "^10.0.0",
+    "eslint": "^10.0.0",
+    "globals": "^16.1.0",
+    "prettier": "^3.8.1"
   },
   "dependencies": {
-    "canvas-sketch": "^0.2.0",
-    "canvas-sketch-cli": "^1.2.0",
+    "canvas-sketch": "^0.7.7",
+    "canvas-sketch-cli": "^1.15.0",
     "canvas-sketch-util": "^1.6.0",
-    "color": "^3.1.0",
+    "color": "^4.2.3",
     "color-contrast": "^0.0.1",
-    "convex-hull": "^1.0.3",
-    "glsl-hsl2rgb": "^1.1.0",
-    "glsl-noise": "^0.0.0",
-    "glslify": "^7.0.0",
     "hex-to-hsl": "^1.0.2",
-    "hex-to-rgb": "^1.0.1",
-    "nice-color-palettes": "^2.0.0",
-    "p5": "^0.7.3",
-    "three": "^0.132.2"
+    "nice-color-palettes": "^3.0.0"
   }
 }
