@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Share_Tech_Mono } from "next/font/google";
+import { Unica_One } from "next/font/google";
 import "./globals.css";
 
-const shareTechMono = Share_Tech_Mono({
+const font = Unica_One({
   weight: "400",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "GENERATIVE NONSENSE // Kelle",
+  title: "Procedural Nonsense",
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={shareTechMono.className}>
+      <body className={font.className}>
         {children}
       </body>
     </html>

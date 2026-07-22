@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { sketches } from "@/lib/sketches/registry";
-import Scanlines from "@/components/Scanlines";
-import GlitchTitle from "@/components/GlitchTitle";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -9,13 +7,9 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <Scanlines />
       <div className={styles.container}>
         <header className={styles.header}>
-          <GlitchTitle text="GENERATIVE NONSENSE" />
-          <p className={styles.subtitle}>
-            // <span className={styles.highlight}>generative</span> not generated
-          </p>
+          <h1 className={styles.title}>Procedural Nonsense</h1>
           <p className={styles.subtitle}>
             // canvas experiments by <span className={styles.highlight}>kelle</span>
           </p>
