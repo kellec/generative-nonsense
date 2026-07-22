@@ -57,18 +57,12 @@ export default function SketchCanvas({ settings, sketch }: Props) {
     };
   }, [settings, sketch]);
 
-  const [width, height] = resolveDimensions(settings.dimensions);
-  const aspectRatio = width / height;
-
   return (
     <canvas
       ref={canvasRef}
       style={{
         maxWidth: "100vw",
         maxHeight: "100vh",
-        width: aspectRatio >= 1 ? "100vw" : "auto",
-        height: aspectRatio >= 1 ? "auto" : "100vh",
-        aspectRatio: `${width} / ${height}`,
         display: "block",
         margin: "0 auto",
       }}
